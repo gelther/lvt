@@ -29,14 +29,14 @@ class Rates
     /**
      * VatValidator constructor.
      *
-     * @param Cache $cache          (optional)
-     * @param VatClient $client     (optional)
+     * @param Cache     $cache  (optional)
+     * @param VatClient $client (optional)
      */
     public function __construct($cache = null, VatClient $client = null)
     {
-        $this->cache = $cache;
+        $this->cache  = $cache;
         $this->client = $client;
-        $this->map = $this->load();
+        $this->map    = $this->load();
     }
 
     protected function load()
@@ -66,7 +66,7 @@ class Rates
      */
     protected function fetch()
     {
-        if( ! $this->client ) {
+        if (! $this->client) {
             $this->client = new JsonVatClient();
         }
 
@@ -82,8 +82,8 @@ class Rates
     }
 
     /**
-     * @param string $country
-     * @param string $rate
+     * @param  string $country
+     * @param  string $rate
      *
      * @return double
      *
@@ -94,11 +94,11 @@ class Rates
         $country = strtoupper($country);
         $country = $this->getCountryCode($country);
 
-        if (!isset($this->map[$country])) {
+        if (! isset($this->map[$country])) {
             throw new Exception('Invalid country code.');
         }
 
-        if (!isset($this->map[$country]->$rate)) {
+        if (! isset($this->map[$country]->$rate)) {
             throw new Exception('Invalid rate.');
         }
 
@@ -110,7 +110,7 @@ class Rates
      *
      * Fixes ISO-3166-1-alpha2 exceptions
      *
-     * @param string $country
+     * @param  string $country
      * @return string
      */
     protected function getCountryCode($country)

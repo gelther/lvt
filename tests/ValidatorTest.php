@@ -19,7 +19,8 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers Validator::validateFormat
      */
-    public function test_validateFormat() {
+    public function test_validateFormat()
+    {
         $valid = [
             'ATU12345678',
             'BE0123456789',
@@ -54,8 +55,8 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
         ];
 
         $validator = new Validator();
-        foreach( $valid as $format ) {
-            self::assertTrue( $validator->validateFormat( $format ), "{$format} did not pass validation." );
+        foreach ($valid as $format) {
+            self::assertTrue($validator->validateFormat($format), "{$format} did not pass validation.");
         }
 
         $invalid = [
@@ -91,15 +92,16 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
             'SK123456789',
         ];
 
-        foreach( $invalid as $format ) {
-            self::assertFalse( $validator->validateFormat( $format ), "{$format} passed validation, but shouldn't." );
+        foreach ($invalid as $format) {
+            self::assertFalse($validator->validateFormat($format), "{$format} passed validation, but shouldn't.");
         }
     }
 
     /**
      * @covers Validator::validateExistence
      */
-    public function test_validateExistence() {
+    public function test_validateExistence()
+    {
         $mock = self::getMockBuilder(Vies\Client::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -107,13 +109,11 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
         $mock
             ->expects(self::once())
             ->method('checkVat')
-            ->with('NL','123456789')
+            ->with('NL', '123456789')
             ->will(self::returnValue(true));
 
-        $validator = new Validator( $mock );
-        self::assertTrue( $validator->validateExistence('NL123456789') );
+        $validator = new Validator($mock);
+        self::assertTrue($validator->validateExistence('NL123456789'));
     }
 
 }
-
-

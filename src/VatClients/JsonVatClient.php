@@ -14,13 +14,14 @@ class JsonVatClient implements VatClient{
      *
      * @return array
      */
-    public function fetch() {
+    public function fetch()
+    {
         $url = self::URL;
 
         // fetch data
         $response = file_get_contents($url);
-        if( empty( $response ) ) {
-            throw new VatClientException( "Error fetching rates from {$url}.");
+        if (empty($response)) {
+            throw new VatClientException("Error fetching rates from {$url}.");
         }
         $data = json_decode($response);
 
@@ -32,4 +33,5 @@ class JsonVatClient implements VatClient{
 
         return $map;
     }
+
 }

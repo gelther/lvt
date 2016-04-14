@@ -20,7 +20,8 @@ class RatesTest extends PHPUnit_Framework_TestCase
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    public function getClientMock() {
+    public function getClientMock()
+    {
         $mock = self::getMockBuilder(JsonVatClient::class)
             ->getMock();
        return $mock;
@@ -31,7 +32,8 @@ class RatesTest extends PHPUnit_Framework_TestCase
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    public function getCacheMock() {
+    public function getCacheMock()
+    {
         $mock = self::getMockBuilder(Mocks\Cache::class)
             ->getMock();
 
@@ -43,46 +45,48 @@ class RatesTest extends PHPUnit_Framework_TestCase
      *
      * @covers Rates::country
      */
-    public function test_country() {
+    public function test_country()
+    {
         $data = array(
-            'NL' => (object) [
+            'NL'       => (object) [
                 'standard' => 21,
-                'reduced' => 15
+                'reduced'  => 15
             ]
         );
         $mock = $this->getClientMock();
         $mock
             ->method('fetch')
-            ->will(self::returnValue( $data ));
+            ->will(self::returnValue($data));
 
         $rates = new Rates(null, $mock);
 
         // Exception when supplying country code for which we have no rate
-        self::expectException( 'Exception' );
+        self::expectException('Exception');
         $rates->country('US');
 
         // Return correct VAT rates
-        self::assertEquals(  $rates->country('NL'), 21 );
-        self::assertEquals(  $rates->country('NL', 'reduced'), 15 );
+        self::assertEquals($rates->country('NL'), 21);
+        self::assertEquals($rates->country('NL', 'reduced'), 15);
     }
 
     /**
      * @covers Rates::all()
      */
-    public function test_all() {
+    public function test_all()
+    {
         $data = array(
-            'NL' => (object) [
+            'NL'       => (object) [
                 'standard' => 21,
-                'reduced' => 15
+                'reduced'  => 15
             ]
         );
         $mock = $this->getClientMock();
         $mock
             ->method('fetch')
-            ->will(self::returnValue( $data ));
+            ->will(self::returnValue($data));
 
         $rates = new Rates(null, $mock);
-        self::assertEquals( $data, $rates->all());
+        self::assertEquals($data, $rates->all());
     }
 
     /**
@@ -90,16 +94,17 @@ class RatesTest extends PHPUnit_Framework_TestCase
      *
      * @covers Rates::load
      */
-    public function test_ratesAreLoadedFromCache() {
+    public function test_ratesAreLoadedFromCache()
+    {
         $mock = $this->getCacheMock();
-        $data = array( 'NL' => (object) [ 'standard' => 21, 'reduced' => 15 ]);
+        $data = array('NL' => (object) [ 'standard' => 21, 'reduced' => 15 ]);
 
         $mock
             ->method('get')
             ->with('vat-rates')
             ->will(self::returnValue($data));
 
-        $rates = new Rates( $mock );
+        $rates = new Rates($mock);
 
         self::assertNotEmpty($rates->all());
         self::assertEquals($rates->all(), $data);
@@ -109,10 +114,11 @@ class RatesTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     *  @covers Rates::load
+     * @covers Rates::load
      */
-    public function test_ratesAreStoredInCache() {
-        $cacheMock = self::getMockBuilder(Mocks\Cache::class)
+    public function test_ratesAreStoredInCache()
+    {
+        $cacheMock  = self::getMockBuilder(Mocks\Cache::class)
             ->getMock();
         $clientMock = $this->getClientMock();
 
@@ -120,8 +126,7 @@ class RatesTest extends PHPUnit_Framework_TestCase
             ->expects(self::once())
             ->method('put');
 
-        $rates = new Rates( $cacheMock, $clientMock );
+        $rates = new Rates($cacheMock, $clientMock);
     }
-
 
 }

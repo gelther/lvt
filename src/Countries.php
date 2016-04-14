@@ -295,7 +295,8 @@ class Countries {
      *
      * @return array
      */
-    public function all() {
+    public function all()
+    {
         return self::$all;
     }
 
@@ -304,11 +305,12 @@ class Countries {
      *
      * @return array
      */
-    public function europe() {
-        $codes = self::$eu;
+    public function europe()
+    {
+        $codes     = self::$eu;
         $countries = [];
 
-        foreach($codes as $code){
+        foreach ($codes as $code) {
             $countries[$code] = self::$all[$code];
         }
 
@@ -318,11 +320,12 @@ class Countries {
     /**
      * Get full country name for a given country code
      *
-     * @param string $code
+     * @param  string $code
      *
      * @return string
      */
-    public function name($code) {
+    public function name($code)
+    {
         $code = strtoupper($code);
         return self::$all[$code];
     }
@@ -330,11 +333,12 @@ class Countries {
     /**
      * Checks whether the given country is in the EU
      *
-     * @param string $code
+     * @param  string $code
      *
      * @return bool
      */
-    public function inEurope($code) {
+    public function inEurope($code)
+    {
         $code = strtoupper($code);
         return in_array($code, self::$eu);
     }
@@ -344,15 +348,16 @@ class Countries {
      *
      * @link http://about.ip2c.org/
      *
-     * @param string $ip
+     * @param  string $ip
      *
      * @return string
      */
-    public function ip($ip) {
-        $response = file_get_contents('http://ip2c.org/' . $ip);
+    public function ip($ip)
+    {
+        $response = file_get_contents('http://ip2c.org/'.$ip);
 
-        if(!empty($response)) {
-            $parts = explode( ';', $response );
+        if (! empty($response)) {
+            $parts = explode(';', $response);
             return $parts[1] === 'ZZ' ? '' : $parts[1];
         }
 
@@ -364,16 +369,17 @@ class Countries {
      *
      * @link
      *
-     * @param string $code
+     * @param  string $code
      * @return string
      */
-    public function fixCode($code) {
+    public function fixCode($code)
+    {
         static $exceptions = array(
             'GR' => 'EL',
             'UK' => 'GB',
         );
 
-        if( isset( $exceptions[$code] ) ) {
+        if (isset($exceptions[$code])) {
             return $exceptions[$code];
         }
 
