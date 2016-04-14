@@ -48,12 +48,13 @@ class Validator {
     /**
      * VatValidator constructor.
      *
-     * @param Vies\Client $client        (optional)
+     * @param Vies\Client $client (optional)
      */
-    public function __construct( Vies\Client $client = null ) {
+    public function __construct(Vies\Client $client = null)
+    {
         $this->client = $client;
 
-        if( ! $this->client ) {
+        if (! $this->client) {
             $this->client = new Vies\Client();
         }
     }
@@ -61,47 +62,48 @@ class Validator {
     /**
      * Validate a VAT number format. This does not check whether the VAT number was really issued.
      *
-     * @param string $vatNumber
+     * @param  string  $vatNumber
      *
      * @return boolean
      */
-    public function validateFormat( $vatNumber ) {
-        $vatNumber = strtoupper( $vatNumber );
-        $country = substr( $vatNumber, 0, 2 );
-        $number = substr( $vatNumber, 2 );
+    public function validateFormat($vatNumber)
+    {
+        $vatNumber = strtoupper($vatNumber);
+        $country   = substr($vatNumber, 0, 2);
+        $number    = substr($vatNumber, 2);
 
-        if( ! isset( self::$patterns[$country]) ) {
+        if (! isset(self::$patterns[$country])) {
             return false;
         }
 
-        return preg_match( '/' . self::$patterns[$country] . '$/', $number ) > 0;
+        return preg_match('/'.self::$patterns[$country].'$/', $number) > 0;
     }
 
     /**
-     *
-     * @param string $vatNumber
+     * @param  string  $vatNumber
      *
      * @return boolean
      *
      * @throws Vies\ViesException
      */
-    public function validateExistence($vatNumber) {
-        $vatNumber = strtoupper( $vatNumber );
-        $country = substr( $vatNumber, 0, 2 );
-        $number = substr( $vatNumber, 2 );
+    public function validateExistence($vatNumber)
+    {
+        $vatNumber = strtoupper($vatNumber);
+        $country   = substr($vatNumber, 0, 2);
+        $number    = substr($vatNumber, 2);
         return $this->client->checkVat($country, $number);
     }
 
     /**
      * Validates a VAT number using format + existence check.
      *
-     * @param string $vatNumber Either the full VAT number (incl. country) or just the part after the country code.
+     * @param  string  $vatNumber Either the full VAT number (incl. country) or just the part after the country code.
      *
      * @return boolean
      */
-    public function validate( $vatNumber ) {
-       return $this->validateFormat( $vatNumber ) && $this->validateExistence( $vatNumber );
+    public function validate($vatNumber)
+    {
+       return $this->validateFormat($vatNumber) && $this->validateExistence($vatNumber);
     }
-
 
 }
