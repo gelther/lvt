@@ -7,6 +7,7 @@ use DvK\Laravel\Vat\Rates as OG;
 
 class Rates extends Facade {
 
-    protected static function getFacadeAccessor() { return OG::class; }
+    protected static function getFacadeAccessor()
+    {return OG::class; }
 
 }
