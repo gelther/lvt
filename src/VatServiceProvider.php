@@ -18,8 +18,8 @@ class VatServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        RequestValidator::extend('vat_number', function($attribute, $value, $parameters, $validator ) {
-            return ValidatorFacade::validate( $value );
+        RequestValidator::extend('vat_number', function($attribute, $value, $parameters, $validator) {
+            return ValidatorFacade::validate($value);
         });
     }
 
@@ -30,18 +30,18 @@ class VatServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton( Countries::class, function (Container $app) {
+        $this->app->singleton(Countries::class, function (Container $app) {
             return new Countries();
         });
 
-        $this->app->singleton( Validator::class, function (Container $app) {
+        $this->app->singleton(Validator::class, function (Container $app) {
            return new Validator();
         });
 
-        $this->app->singleton( Rates::class, function (Container $app) {
+        $this->app->singleton(Rates::class, function (Container $app) {
             $defaultCacheDriver = $app['cache']->getDefaultDriver();
-            $cacheDriver = $app['cache']->driver( $defaultCacheDriver );
-            return new Rates( $cacheDriver );
+            $cacheDriver        = $app['cache']->driver($defaultCacheDriver);
+            return new Rates($cacheDriver);
         });
     }
 
